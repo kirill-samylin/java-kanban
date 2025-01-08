@@ -1,3 +1,8 @@
+package entities;
+
+import enums.TaskStatus;
+import enums.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +14,13 @@ public class Task {
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
+        this.status = TaskStatus.NEW;
     }
 
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }

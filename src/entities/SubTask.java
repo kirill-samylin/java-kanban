@@ -1,3 +1,7 @@
+package entities;
+
+import enums.TaskType;
+
 public class SubTask extends Task {
     private int epicId;
 

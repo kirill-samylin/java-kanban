@@ -1,3 +1,7 @@
+package entities;
+
+import enums.TaskType;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {

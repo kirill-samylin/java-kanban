@@ -1,4 +1,8 @@
-import java.util.ArrayList;
+import entities.Epic;
+import entities.SubTask;
+import entities.Task;
+import enums.TaskStatus;
+import service.TaskManager;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,9 +33,9 @@ public class Main {
         epic2.addSubTaskId(subTask3.getId());
         taskManager.updateEpic(epic2);
         System.out.println();
-        taskManager.printEpics();
-        taskManager.printTasks();
-        taskManager.printSubTasks();
+        System.out.println(taskManager.getEpics());
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getSubTasks());
 
         subTask1.setStatus(TaskStatus.DONE);
         taskManager.updateSubTask(subTask1);
@@ -40,14 +44,15 @@ public class Main {
         subTask3.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateSubTask(subTask3);
         System.out.println();
-        taskManager.printEpics();
+        System.out.println(taskManager.getEpics());
 
         taskManager.removeTaskById(task1.getId());
         taskManager.removeEpicById(epic1.getId());
         System.out.println();
-        taskManager.printEpics();
-        taskManager.printTasks();
-        taskManager.printSubTasks();
+
+        System.out.println(taskManager.getEpics());
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getSubTasks());
 
     }
 }
