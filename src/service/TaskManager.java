@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TaskManager {
-    private int counter = 0;
+    private int counter = 1;
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, SubTask> subTasks;
     private HashMap<Integer, Epic> epics;
@@ -140,7 +140,7 @@ public class TaskManager {
 
     private void refreshEpicStatus(int epicId) {
         if (epics.containsKey(epicId)) {
-            TaskStatus newEpicStatus = TaskStatus.IN_PROGRESS;
+            TaskStatus newEpicStatus = TaskStatus.NEW;
             Epic epic = epics.get(epicId);
 
             ArrayList<Integer> epicSubTaskIds = epic.getSubTaskIds();
@@ -157,16 +157,15 @@ public class TaskManager {
                     countDoneSubTasks++;
                 }
             }
-
-            if (countDoneSubTasks == countEpicSubTasks) {
-                newEpicStatus = TaskStatus.DONE;
-            }
-            if (countNewSubTasks == countEpicSubTasks) {
-                newEpicStatus = TaskStatus.NEW;
+            if (countEpicSubTasks > 0) {
+                if (countDoneSubTasks == countEpicSubTasks) {
+                    newEpicStatus = TaskStatus.DONE;
+                } else if (countNewSubTasks != countEpicSubTasks) {
+                    newEpicStatus = TaskStatus.IN_PROGRESS;
+                }
             }
 
             epic.setStatus(newEpicStatus);
-            updateEpic(epic);
         }
     }
 
