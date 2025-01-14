@@ -1,6 +1,6 @@
-package entities;
+package app.entities;
 
-import enums.TaskType;
+import app.enums.TaskType;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Epic extends Task {
     }
 
     public ArrayList<Integer> getSubTaskIds() {
-        return subTaskIds;
+        return new ArrayList<>(subTaskIds);
     };
 
     public void setSubTaskIds(ArrayList<Integer> subTaskIds) {
@@ -21,10 +21,14 @@ public class Epic extends Task {
     }
 
     public void addSubTaskId(int subTaskId) {
-        subTaskIds.add(subTaskId);
+        if (subTaskId == id) {
+            System.out.println("Нельзя добавить эпик в подзадачи");
+        } else {
+            subTaskIds.add(subTaskId);
+        }
     }
 
-    public void removeSubTaskId(int subTaskId) {
+    public void removeSubTaskId(Integer subTaskId) {
         subTaskIds.remove(subTaskId);
     }
 

@@ -1,6 +1,6 @@
-package entities;
+package app.entities;
 
-import enums.TaskType;
+import app.enums.TaskType;
 
 public class SubTask extends Task {
     private int epicId;
@@ -13,6 +13,15 @@ public class SubTask extends Task {
     public int getEpicId() {
         return epicId;
     };
+
+    @Override
+    public void setId(int id) {
+        if (epicId == id) {
+            System.out.println("Нельзя становить id эпика в качестве id");
+        } else {
+            this.id = id;
+        }
+    }
 
     @Override
     public TaskType getTaskType() {

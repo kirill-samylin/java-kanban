@@ -1,7 +1,7 @@
-package entities;
+package app.entities;
 
-import enums.TaskStatus;
-import enums.TaskType;
+import app.enums.TaskStatus;
+import app.enums.TaskType;
 
 import java.util.Objects;
 
@@ -24,6 +24,7 @@ public class Task {
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getDescription() {
         return description;
     }

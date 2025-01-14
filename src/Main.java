@@ -1,12 +1,13 @@
-import entities.Epic;
-import entities.SubTask;
-import entities.Task;
-import enums.TaskStatus;
-import service.TaskManager;
+import app.entities.Epic;
+import app.entities.SubTask;
+import app.entities.Task;
+import app.enums.TaskStatus;
+import app.interfaces.TaskManager;
+import app.utils.Managers;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         Task task1 = new Task("Первая задача", "описания первой задачи");
         taskManager.createNewTask(task1);
