@@ -1,5 +1,3 @@
-package tests;
-
 import app.entities.Epic;
 import app.entities.SubTask;
 import app.entities.Task;

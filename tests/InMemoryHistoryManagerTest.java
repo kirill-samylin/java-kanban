@@ -1,5 +1,3 @@
-package tests;
-
 import app.entities.Task;
 import app.interfaces.HistoryManager;
 import app.service.InMemoryHistoryManager;

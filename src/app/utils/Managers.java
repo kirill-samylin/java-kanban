@@ -5,7 +5,9 @@ import app.interfaces.TaskManager;
 import app.service.InMemoryHistoryManager;
 import app.service.InMemoryTaskManager;
 
-public class Managers {
+public final class Managers {
+    private Managers() {}
+
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
