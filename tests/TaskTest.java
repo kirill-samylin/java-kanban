@@ -20,7 +20,7 @@ public class TaskTest {
         Task subTask = new SubTask("Title", "Desciprion", 99);
         subTask.setId(1);
 
-        assertTrue(task1.equals(subTask), "Наследники класса Task с одинаковым id должны быть равны");
+        assertFalse(task1.equals(subTask), "Наследники класса Task с одинаковым id не должны быть равны");
     }
 
     @Test
