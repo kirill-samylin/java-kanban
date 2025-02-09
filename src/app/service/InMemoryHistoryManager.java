@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    final private CustomLinkedList history;
+    private final CustomLinkedList history;
 
     public InMemoryHistoryManager() {
         history = new CustomLinkedList();
@@ -39,7 +39,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node<Task> head;
         private Node<Task> tail;
 
-        final private Map<Integer, Node<Task>> node = new HashMap<>();
+        private final Map<Integer, Node<Task>> node = new HashMap<>();
 
         public void linkLast(Task task) {
             if (node.containsKey(task.getId())) {
