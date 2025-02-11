@@ -1,7 +1,6 @@
 package app.service;
 
 import app.entities.Task;
-import app.entities.Node;
 import app.interfaces.HistoryManager;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             // Не добавляем null задачи
             return;
         }
+        history.removeNode(task.getId());
         history.linkLast(task);
     }
 
@@ -35,49 +35,57 @@ public class InMemoryHistoryManager implements HistoryManager {
         return history.getTasks();
     }
 
+    private static class Node<T> {
+        public T value;
+        public Node<T> next;
+        public Node<T> prev;
+
+        public Node(Node<T> prev, T value, Node<T> next) {
+            this.value = value;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
     private static class CustomLinkedList {
         private Node<Task> head;
         private Node<Task> tail;
 
-        private final Map<Integer, Node<Task>> node = new HashMap<>();
+        private final Map<Integer, Node<Task>> nodes = new HashMap<>();
 
-        public void linkLast(Task task) {
-            if (node.containsKey(task.getId())) {
-                removeNode(node.get(task.getId()));
-            }
-            final Node<Task> oldTail = tail;
-            final Node<Task> newNode = new Node<>(oldTail, task, null);
-            tail = newNode;
-            if (oldTail == null) {
+        private void linkLast(Task task) {
+            final Node<Task> newNode = new Node<>(tail, task, null);
+            if (tail == null) {
                 head = newNode;
             } else {
-                oldTail.next = newNode;
+                tail.next = newNode;
             }
-            node.put(task.getId(), newNode);
+            tail = newNode;
+            nodes.put(task.getId(), newNode);
         }
 
         private void removeNode(int id) {
-            if (node.containsKey(id)) {
-                removeNode(node.get(id));
+            Node<Task> node = nodes.remove(id);
+            if (node == null) {
+                return;
             }
+            removeNode(node);
         }
 
-        private void removeNode(Node<Task> node) {
-            final Node<Task> prev = node.prev;
-            final Node<Task> next = node.next;
+        private void removeNode(Node<Task> removedNode) {
+            final Node<Task> prev = removedNode.prev;
+            final Node<Task> next = removedNode.next;
             if (prev == null) {
                 head = next;
             } else {
                 prev.next = next;
-                node.prev = null;
             }
             if (next == null) {
                 tail = prev;
             } else {
                 next.prev = prev;
-                node.next = null;
             }
-            node.value = null;
+            nodes.remove(removedNode.value.getId());
         }
 
         private List<Task> getTasks() {
