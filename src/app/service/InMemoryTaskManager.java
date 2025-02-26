@@ -28,7 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private int generateId() {
         return counter++;
-    };
+    }
 
     @Override
     public List<Task> getTasks() {
