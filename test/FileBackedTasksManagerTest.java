@@ -30,4 +30,12 @@ public class FileBackedTasksManagerTest {
         assertEquals(tasksManager.getSubTasks(), fileManager.getSubTasks(), "Подзадачи после выгрузки совпадает");
         assertEquals(tasksManager.getEpics(), fileManager.getEpics(), "Эпики после выгрузки совпадает");
     }
+
+    @Test
+    void testLoadEmptyFile() {
+        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(new File("resources/empty.csv"));
+        assertEquals(fileManager.getTasks().size(), 0, "Задачи отсутсвуют");
+        assertEquals(fileManager.getSubTasks().size(), 0, "Подзадачи отсутсвуют");
+        assertEquals(fileManager.getEpics().size(), 0, "Эпики отсутсвуют");
+    }
 }
