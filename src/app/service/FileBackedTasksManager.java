@@ -7,6 +7,7 @@ import app.enums.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
@@ -24,7 +25,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (int i = 1; i < taskLines.size(); i++) {
                 String[] line = taskLines.get(i).split(",");
                 Task task = fromString(line);
-                switch (task.getTaskType()) {
+                switch (Objects.requireNonNull(task).getTaskType()) {
                     case TASK:
                         tasksManager.tasks.put(task.getId(), task);
                         break;
@@ -56,16 +57,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         TaskType taskType = TaskType.valueOf(line[1]);
         String title = line[2];
         String description = line[4];
-        switch (taskType) {
-            case TASK:
-                return new Task(title, description, id);
-            case EPIC:
-                return new Epic(title, description, id);
-            case SUBTASK:
+        return switch (taskType) {
+            case TASK -> new Task(title, description, id);
+            case EPIC -> new Epic(title, description, id);
+            case SUBTASK -> {
                 int epicId = Integer.parseInt(line[5]);
-                return new SubTask(title, description, id, epicId);
-        }
-        return null;
+                yield new SubTask(title, description, id, epicId);
+            }
+        };
     }
 
     // метод сохранения
