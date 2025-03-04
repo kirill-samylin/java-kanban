@@ -44,13 +44,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Ошибка при в чтении из файла", e);
         }
         return tasksManager;
     }
 
     // конвертация строки в задачу
     private static Task fromString(String[] line) {
+        if (line.length == 0) return null;
         int id = Integer.parseInt(line[0]);
         TaskType taskType = TaskType.valueOf(line[1]);
         String title = line[2];
@@ -68,12 +69,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     // метод сохранения
-    private void save() throws ManagerSaveException {
+    private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(FIRST_LINE);
-            writer.newLine();
             addTasksToFile(writer);
-            writer.newLine();
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при в записи в файл", e);
         }
@@ -82,16 +81,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     // записываем все задачи в файл
     private void addTasksToFile(BufferedWriter writer) throws IOException {
         for (Task task : getTasks()) {
-            writer.write(toString(task));
             writer.newLine();
+            writer.append(toString(task));
         }
         for (Epic epic : getEpics()) {
-            writer.write(toString(epic));
             writer.newLine();
+            writer.write(toString(epic));
         }
         for (SubTask subtask : getSubTasks()) {
-            writer.write(toString(subtask));
             writer.newLine();
+            writer.write(toString(subtask));
         }
     }
 
