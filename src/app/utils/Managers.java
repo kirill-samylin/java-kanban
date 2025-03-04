@@ -4,7 +4,6 @@ import app.interfaces.HistoryManager;
 import app.interfaces.TaskManager;
 import app.service.InMemoryHistoryManager;
 import app.service.FileBackedTasksManager;
-import app.service.InMemoryTaskManager;
 
 import java.io.File;
 
