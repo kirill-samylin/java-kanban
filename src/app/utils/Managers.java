@@ -3,7 +3,9 @@ package app.utils;
 import app.interfaces.HistoryManager;
 import app.interfaces.TaskManager;
 import app.service.InMemoryHistoryManager;
-import app.service.InMemoryTaskManager;
+import app.service.FileBackedTasksManager;
+
+import java.io.File;
 
 public final class Managers {
     private Managers() {
@@ -11,7 +13,7 @@ public final class Managers {
     }
 
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return new FileBackedTasksManager(new File("resources/bd.csv"));
     }
 
     public static HistoryManager getDefaultHistory() {
