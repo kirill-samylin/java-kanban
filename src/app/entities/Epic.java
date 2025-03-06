@@ -1,11 +1,13 @@
 package app.entities;
-
 import app.enums.TaskType;
+import app.utils.LocalDateAdapter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTaskIds;
+    private LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description);
@@ -33,7 +35,7 @@ public class Epic extends Task {
     public void addSubTaskId(int subTaskId) {
         if (subTaskId == id) {
             System.out.println("Нельзя добавить эпик в подзадачи");
-        } else {
+        } else if (!subTaskIds.contains(subTaskId)) {
             subTaskIds.add(subTaskId);
         }
     }
@@ -48,11 +50,23 @@ public class Epic extends Task {
     }
 
     @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
     public String toString() {
         return "Эпик{" +
                 "название='" + title + '\'' +
                 ", описание='" + description + '\'' +
                 ", id='" + id + '\'' +
-                ", статус='" + status + '\'';
+                ", статус='" + status + '\'' +
+                ", дата начала='" + getStartTimeString() + '\'' +
+                ", продолжительность='" + duration + '\'' +
+                ", дата окончания='" + getEndTimeString() + '\'';
     }
 }

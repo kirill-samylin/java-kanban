@@ -1,4 +1,4 @@
-id,type,name,status,description,epic
-1,TASK,Task 1,NEW,Description 1
-2,EPIC,Epic 2,NEW,Description 2
-3,SUBTASK,SubTask 2,NEW,Description 3,2
+id,type,name,status,description,start_date,duration,end_date,epic
+1,TASK,Task 1,NEW,Description 1,null,0,null
+2,EPIC,Epic 2,NEW,Description 2,null,0,null
+3,SUBTASK,SubTask 2,NEW,Description 3,null,0,null,2

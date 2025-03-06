@@ -2,24 +2,44 @@ package app.entities;
 
 import app.enums.TaskStatus;
 import app.enums.TaskType;
+import app.utils.LocalDateAdapter;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
     protected int id;
     protected String title;
     protected String description;
-    protected TaskStatus status;
+    protected TaskStatus status = TaskStatus.NEW;
+    protected LocalDateTime startTime;
+    protected long duration;
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.status = TaskStatus.NEW;
+    }
+
+    public Task(String title, String description, LocalDateTime startTime, long duration) {
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public Task(String title, String description, int id) {
         this(title, description);
         this.id = id;
+    }
+
+    public Task(String title, String description, int id, TaskStatus status, LocalDateTime startTime,
+                long duration) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getTitle() {
@@ -54,6 +74,40 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public String getStartTimeString() {
+        if (startTime == null) return null;
+        return startTime.format(LocalDateAdapter.formatter);
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime != null) {
+            return startTime.plusMinutes(duration);
+        }
+        return null;
+    }
+
+    public String getEndTimeString() {
+        LocalDateTime endTime = getEndTime();
+        if (endTime == null) return null;
+        return endTime.format(LocalDateAdapter.formatter);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,6 +127,9 @@ public class Task {
                 "название='" + title + '\'' +
                 ", описание='" + description + '\'' +
                 ", id='" + id + '\'' +
-                ", статус='" + status + '\'';
+                ", статус='" + status + '\'' +
+                ", дата начала='" + getStartTimeString() + '\'' +
+                ", продолжительность='" + duration + '\'' +
+                ", дата окончания='" + getEndTimeString() + '\'';
     }
 }

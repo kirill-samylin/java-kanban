@@ -1,9 +1,13 @@
 package app.entities;
 
+import app.enums.TaskStatus;
 import app.enums.TaskType;
+
+import java.time.LocalDateTime;
 
 public class SubTask extends Task {
     private int epicId;
+    private LocalDateTime endTime;
 
     public SubTask(String title, String description, int epicId) {
         super(title, description);
@@ -12,6 +16,12 @@ public class SubTask extends Task {
 
     public SubTask(String title, String description, int id, int epicId) {
         super(title, description, id);
+        this.epicId = epicId;
+    }
+
+    public SubTask(String title, String description, int id, TaskStatus status, LocalDateTime startTime,
+                long duration, int epicId) {
+        super(title, description, id, status, startTime, duration);
         this.epicId = epicId;
     }
 
@@ -40,6 +50,9 @@ public class SubTask extends Task {
                 ", описание='" + description + '\'' +
                 ", id='" + id + '\'' +
                 ", статус='" + status + '\'' +
-                ", id эпика='" + epicId + '}' + '\'';
+                ", id эпика='" + epicId + '}' + '\'' +
+                ", дата начала='" + getStartTimeString() + '\'' +
+                ", продолжительность='" + duration + '\'' +
+                ", дата окончания='" + getEndTimeString() + '\'';
     }
 }
