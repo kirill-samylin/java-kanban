@@ -1,6 +1,5 @@
 package app.entities;
 import app.enums.TaskType;
-import app.utils.LocalDateAdapter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

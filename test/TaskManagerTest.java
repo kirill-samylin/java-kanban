@@ -3,7 +3,6 @@ import app.entities.SubTask;
 import app.entities.Task;
 import app.enums.TaskStatus;
 import app.interfaces.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
