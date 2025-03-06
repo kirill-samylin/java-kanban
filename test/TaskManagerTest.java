@@ -65,16 +65,30 @@ public abstract class TaskManagerTest<Manager extends TaskManager> {
 
     @Test
     public void testGetSubTasks() {
+        taskManager.removeAllSubTask();
+        Epic epic = new Epic("Epic", "Description");
+        int epicId = taskManager.createNewEpic(epic);
+
+        SubTask subTask1 = new SubTask("SubTask 1", "Description 1", epicId);
+        SubTask subTask2 = new SubTask("SubTask 2", "Description 2", epicId);
+        taskManager.createNewSubtask(subTask1);
+        taskManager.createNewSubtask(subTask2);
         List<SubTask> subTasks = taskManager.getSubTasks();
         assertEquals(2, subTasks.size(), "Должно быть две подзадачи");
+        assertTrue(subTasks.contains(subTask1), "Список подзадач должен содержать subTask1");
+        assertTrue(subTasks.contains(subTask2), "Список подзадач должен содержать subTask2");
     }
 
     @Test
     public void testGetEpics() {
+        taskManager.removeAllEpic();
+        Epic epic1 = new Epic("Epic 1", "Description 1");
         Epic epic2 = new Epic("Epic 2", "Description 2");
+        taskManager.createNewEpic(epic1);
         taskManager.createNewEpic(epic2);
         List<Epic> epics = taskManager.getEpics();
         assertEquals(2, epics.size(), "Должно быть два эпика");
+        assertTrue(epics.contains(epic1), "Список эпиков должен содержать epic1");
         assertTrue(epics.contains(epic2), "Список эпиков должен содержать epic2");
     }
 
