@@ -1,4 +1,4 @@
 id,type,name,status,description,start_date,duration,end_date,epic
-2,TASK,Вторая задача,NEW,описания второй задачи,null,0,null
-6,EPIC,Эпик2,IN_PROGRESS,эпик с одной подзадачей,null,0,null
-7,SUBTASK,Подзадача 3,IN_PROGRESS,3,null,0,null,6
+2,TASK,Вторая задача,NEW,описания второй задачи,null,PT0S,null
+6,EPIC,Эпик2,IN_PROGRESS,эпик с одной подзадачей,null,PT0S,null
+7,SUBTASK,Подзадача 3,IN_PROGRESS,3,null,PT0S,null,6

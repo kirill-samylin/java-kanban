@@ -3,6 +3,7 @@ package app.entities;
 import app.enums.TaskStatus;
 import app.enums.TaskType;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class SubTask extends Task {
@@ -20,7 +21,7 @@ public class SubTask extends Task {
     }
 
     public SubTask(String title, String description, int id, TaskStatus status, LocalDateTime startTime,
-                long duration, int epicId) {
+                   Duration duration, int epicId) {
         super(title, description, id, status, startTime, duration);
         this.epicId = epicId;
     }

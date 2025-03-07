@@ -7,6 +7,7 @@ import app.utils.LocalDateAdapter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -30,12 +31,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 switch (Objects.requireNonNull(task).getTaskType()) {
                     case TASK:
                         tasksManager.tasks.put(task.getId(), task);
+                        prioritizedTasks.add(task);
                         break;
                     case EPIC:
                         tasksManager.epics.put(task.getId(), (Epic) task);
                         break;
                     case SUBTASK:
                         tasksManager.subTasks.put(task.getId(), (SubTask) task);
+                        prioritizedTasks.add(task);
                         int epicId = ((SubTask) task).getEpicId();
                         Epic epic = tasksManager.getEpic(epicId);
                         epic.addSubTaskId(task.getId());
@@ -66,7 +69,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         } else {
             startTime = null;
         }
-        long duration = line[5].equals("null") ? 0 : Long.parseLong(line[5]);
+        Duration duration = Duration.ofMinutes(line[6].equals("null") ? 0 : Long.parseLong(line[6]));
 
         return switch (taskType) {
             case TASK -> new Task(title, description, id, status, startTime, duration);
@@ -92,37 +95,33 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private void addTasksToFile(BufferedWriter writer) throws IOException {
         for (Task task : getTasks()) {
             writer.newLine();
-            writer.append(toString(task));
+            writer.append(toStringTask(task));
         }
         for (Epic epic : getEpics()) {
             writer.newLine();
-            writer.write(toString(epic));
+            writer.write(toStringEpic(epic));
         }
         for (SubTask subtask : getSubTasks()) {
             writer.newLine();
-            writer.write(toString(subtask));
+            writer.write(toStringSubTask(subtask));
         }
     }
 
     // конвертирует задачу в строку
-    private String toString(Task task) {
+    private String toStringTask(Task task) {
         return task.getId() + "," + task.getTaskType() + "," + task.getTitle() + "," + task.getStatus() + "," +
-                task.getDescription() + "," + task.getStartTimeString() + "," + task.getDuration() + "," +
+                task.getDescription() + "," + task.getStartTimeString() + "," + task.getDuration().toMinutes() + "," +
                 task.getEndTimeString();
     }
 
     // конвертирует эпик в строку
-    private String toString(Epic epic) {
-        return epic.getId() + "," + epic.getTaskType() + "," + epic.getTitle() + "," + epic.getStatus() + "," +
-                epic.getDescription() + "," + epic.getStartTimeString() + "," + epic.getDuration() + "," +
-                epic.getEndTimeString();
+    private String toStringEpic(Epic epic) {
+        return toStringTask(epic);
     }
 
     // конвертирует подзадачу в строку
-    private String toString(SubTask subtask) {
-        return subtask.getId() + "," + subtask.getTaskType() + "," + subtask.getTitle() + "," + subtask.getStatus() +
-                "," + subtask.getDescription() + "," + subtask.getStartTimeString() +
-                "," + subtask.getDuration() + "," + subtask.getEndTimeString() + "," + subtask.getEpicId();
+    private String toStringSubTask(SubTask subtask) {
+        return toStringTask(subtask) + "," + subtask.getEpicId();
     }
 
     @Override

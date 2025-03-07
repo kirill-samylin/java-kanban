@@ -4,6 +4,7 @@ import app.enums.TaskStatus;
 import app.enums.TaskType;
 import app.utils.LocalDateAdapter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,16 +14,15 @@ public class Task {
     protected String description;
     protected TaskStatus status = TaskStatus.NEW;
     protected LocalDateTime startTime;
-    protected long duration;
+    protected Duration duration;
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public Task(String title, String description, LocalDateTime startTime, long duration) {
-        this.title = title;
-        this.description = description;
+    public Task(String title, String description, LocalDateTime startTime, Duration duration) {
+        this(title, description);
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -33,13 +33,10 @@ public class Task {
     }
 
     public Task(String title, String description, int id, TaskStatus status, LocalDateTime startTime,
-                long duration) {
-        this.title = title;
-        this.description = description;
+                Duration duration) {
+        this(title, description, startTime, duration);
         this.id = id;
         this.status = status;
-        this.startTime = startTime;
-        this.duration = duration;
     }
 
     public String getTitle() {
@@ -74,11 +71,12 @@ public class Task {
         return TaskType.TASK;
     }
 
-    public long getDuration() {
+    public Duration getDuration() {
+        if (duration == null) return Duration.ZERO;
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
@@ -96,10 +94,8 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        if (startTime != null) {
-            return startTime.plusMinutes(duration);
-        }
-        return null;
+        if (startTime == null || duration == null) return null;
+        return startTime.plusMinutes(duration.toMinutes());
     }
 
     public String getEndTimeString() {
@@ -129,7 +125,7 @@ public class Task {
                 ", id='" + id + '\'' +
                 ", статус='" + status + '\'' +
                 ", дата начала='" + getStartTimeString() + '\'' +
-                ", продолжительность='" + duration + '\'' +
+                ", продолжительность='" + getDuration().toMinutes() + '\'' +
                 ", дата окончания='" + getEndTimeString() + '\'';
     }
 }

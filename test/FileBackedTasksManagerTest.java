@@ -3,6 +3,7 @@ import app.service.FileBackedTasksManager;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +14,9 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     void setUp() {
         file = new File("resources/test.csv");
         taskManager = new FileBackedTasksManager(file);
+        taskManager.removeAllTasks();
+        taskManager.removeAllEpic();
+        taskManager.removeAllSubTask();
     }
 
     @Test
@@ -36,5 +40,20 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         assertEquals(0, fileManager.getTasks().size(), "Задачи отсутсвуют");
         assertEquals(0, fileManager.getSubTasks().size(), "Подзадачи отсутсвуют");
         assertEquals(0, fileManager.getEpics().size(), "Эпики отсутсвуют");
+    }
+
+    @Test
+    void testLoadPrioritizedTasks() {
+        LocalDateTime startTime = LocalDateTime.of(2020, 10, 1, 12, 0);
+        LocalDateTime startTime2 = LocalDateTime.of(2025,5, 1, 12, 0);
+        Task task1 = new Task("New Task", "Description", startTime, DURATION);
+        Task task2 = new Task("New Task", "Description", startTime2, DURATION);
+        System.out.println(taskManager.getPrioritizedTasks());
+        System.out.println(taskManager.getTasks());
+        taskManager.createNewTask(task2);
+        taskManager.createNewTask(task1);
+        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(file);
+
+        assertEquals(task1, fileManager.getPrioritizedTasks().getFirst(), "Созданная и полученная задачи должны быть равны");
     }
 }

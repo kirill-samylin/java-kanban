@@ -18,11 +18,6 @@ public class Epic extends Task {
         this.subTaskIds = new ArrayList<>();
     }
 
-    public Epic(String title, String description, int id, ArrayList<Integer> subTaskIds) {
-        super(title, description, id);
-        this.subTaskIds = subTaskIds;
-    }
-
     public ArrayList<Integer> getSubTaskIds() {
         return new ArrayList<>(subTaskIds);
     }
@@ -65,7 +60,7 @@ public class Epic extends Task {
                 ", id='" + id + '\'' +
                 ", статус='" + status + '\'' +
                 ", дата начала='" + getStartTimeString() + '\'' +
-                ", продолжительность='" + duration + '\'' +
+                ", продолжительность='" + duration.toMinutes() + '\'' +
                 ", дата окончания='" + getEndTimeString() + '\'';
     }
 }
