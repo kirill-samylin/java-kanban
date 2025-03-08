@@ -23,7 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
     private static final Comparator<Task> COMPARATOR = Comparator.comparing(Task::getStartTime,
             Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId);
 
-    protected static Set<Task> prioritizedTasks = new TreeSet<>(COMPARATOR);
+    protected Set<Task> prioritizedTasks = new TreeSet<>(COMPARATOR);
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -163,9 +163,6 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.forEach((taskId, task) -> {
             historyManager.remove(taskId);
             prioritizedTasks.remove(task);
-            System.out.println("-----------------");
-            System.out.println(getPrioritizedTasks());
-            System.out.println("-----------------");
         });
         tasks.clear();
     }

@@ -31,14 +31,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 switch (Objects.requireNonNull(task).getTaskType()) {
                     case TASK:
                         tasksManager.tasks.put(task.getId(), task);
-                        prioritizedTasks.add(task);
+                        tasksManager.prioritizedTasks.add(task);
                         break;
                     case EPIC:
                         tasksManager.epics.put(task.getId(), (Epic) task);
                         break;
                     case SUBTASK:
                         tasksManager.subTasks.put(task.getId(), (SubTask) task);
-                        prioritizedTasks.add(task);
+                        tasksManager.prioritizedTasks.add(task);
                         int epicId = ((SubTask) task).getEpicId();
                         Epic epic = tasksManager.getEpic(epicId);
                         epic.addSubTaskId(task.getId());
