@@ -26,7 +26,7 @@ public final class Managers {
         return new InMemoryHistoryManager();
     }
 
-    public static Gson getGson(){
+    public static Gson getGson() {
         GsonBuilder gson = new GsonBuilder()
                 .serializeNulls()
                 .setPrettyPrinting()
