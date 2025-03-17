@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public class SubTask extends Task {
     private int epicId;
-    private LocalDateTime endTime;
 
     public SubTask(String title, String description, int epicId) {
         super(title, description);
@@ -53,7 +52,7 @@ public class SubTask extends Task {
                 ", статус='" + status + '\'' +
                 ", id эпика='" + epicId + '}' + '\'' +
                 ", дата начала='" + getStartTimeString() + '\'' +
-                ", продолжительность='" + duration + '\'' +
+                ", продолжительность='" + getDuration().toMinutes() + '\'' +
                 ", дата окончания='" + getEndTimeString() + '\'';
     }
 }

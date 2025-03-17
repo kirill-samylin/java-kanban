@@ -80,8 +80,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createNewTask(Task newTask) {
         validate(newTask);
-        int id = generateId();
-        newTask.setId(id);
+        if (newTask.getId() == 0) {
+            newTask.setId(generateId());
+        }
+        int id = newTask.getId();
         tasks.put(id, newTask);
         prioritizedTasks.add(newTask);
         return id;
@@ -90,8 +92,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createNewSubtask(SubTask newSubtask) {
         validate(newSubtask);
-        int id = generateId();
-        newSubtask.setId(id);
+        if (newSubtask.getId() == 0) {
+            newSubtask.setId(generateId());
+        }
+        int id = newSubtask.getId();
         int epicId = newSubtask.getEpicId();
         Epic epic = epics.get(epicId);
         if (epic != null) epic.addSubTaskId(id);
@@ -104,7 +108,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int createNewEpic(Epic newEpic) {
-        int id = generateId();
+        if (newEpic.getId() == 0) {
+            newEpic.setId(generateId());
+        }
+        int id = newEpic.getId();
         newEpic.setId(id);
         epics.put(id, newEpic);
         return id;
@@ -300,7 +307,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Task> prioritizedTasks = getPrioritizedTasks();
 
         boolean hasOverlap = prioritizedTasks.stream()
-                .filter(task -> task.getStartTime() != null && task.getEndTime() != null)
+                .filter(task -> task.getStartTime() != null && task.getEndTime() != null && !task.equals(taskToValidate))
                 .anyMatch(task ->
                         newStartTime.isBefore(task.getEndTime()) && task.getStartTime().isBefore(newEndTime)
                 );
