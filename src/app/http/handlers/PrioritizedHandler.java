@@ -6,10 +6,8 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 
 public class PrioritizedHandler extends BaseHttpHandler {
-    private final TaskManager manager;
-
     public PrioritizedHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override

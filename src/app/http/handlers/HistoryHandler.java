@@ -6,10 +6,8 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 
 public class HistoryHandler extends BaseHttpHandler {
-    private final TaskManager manager;
-
     public HistoryHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override

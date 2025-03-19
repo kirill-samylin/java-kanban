@@ -118,18 +118,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTaskById(int taskId) {
-        if (tasks.containsKey(taskId)) {
-            Task removedTask = tasks.remove(taskId);
+    public Task removeTaskById(int taskId) {
+        Task removedTask = tasks.remove(taskId);
+        if (removedTask != null) {
             historyManager.remove(taskId);
             prioritizedTasks.remove(removedTask);
         } else {
             System.out.println("Не найдена задача по индентификатору: " + taskId);
         }
+        return removedTask;
     }
 
     @Override
-    public void removeSubTaskById(int subTaskId) {
+    public SubTask removeSubTaskById(int subTaskId) {
         SubTask subTask = subTasks.remove(subTaskId);
         prioritizedTasks.remove(subTask);
         historyManager.remove(subTaskId);
@@ -145,10 +146,11 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Не найдена подзадача по индентификатору: " + subTaskId);
         }
+        return subTask;
     }
 
     @Override
-    public void removeEpicById(int epicId) {
+    public Epic removeEpicById(int epicId) {
         Epic epicToRemove = epics.remove(epicId);
         if (epicToRemove != null) {
             ArrayList<Integer> subTaskIdsToRemove = epicToRemove.getSubTaskIds();
@@ -163,6 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Не найден эпик по индентификатору: " + epicId);
         }
+        return epicToRemove;
     }
 
     @Override

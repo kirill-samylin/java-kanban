@@ -10,10 +10,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class SubTaskHandler extends BaseHttpHandler {
-    private final TaskManager manager;
-
     public SubTaskHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override
@@ -76,12 +74,11 @@ public class SubTaskHandler extends BaseHttpHandler {
     private void handleDelete(HttpExchange exchange, String[] segments) throws IOException {
         if (segments.length == 2) {
             int id = Integer.parseInt(segments[1]);
-            SubTask subTask = manager.getSubTask(id);
+            SubTask subTask = manager.removeSubTaskById(id);
             if (subTask == null) {
                 String errorMessage = "Подзадача с таким номером id не найдена";
                 sendNotFound(exchange, errorMessage);
             } else {
-                manager.removeTaskById(id);
                 sendText(exchange, "Подзадача успешно удалена");
             }
         } else {

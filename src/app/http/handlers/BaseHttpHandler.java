@@ -1,4 +1,5 @@
 package app.http.handlers;
+import app.interfaces.TaskManager;
 import app.utils.Managers;
 import com.google.gson.Gson;
 
@@ -10,7 +11,14 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public abstract class BaseHttpHandler implements HttpHandler {
-    protected final Gson gson = Managers.getGson();
+    protected final Gson gson;
+    protected final TaskManager manager;
+
+    public BaseHttpHandler(TaskManager manager) {
+        super();
+        this.gson = Managers.getGson();
+        this.manager = manager;
+    }
 
     protected void sendText(HttpExchange exchange, String text, int code) throws IOException {
         exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=UTF-8");

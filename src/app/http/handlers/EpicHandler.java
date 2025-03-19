@@ -9,10 +9,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class EpicHandler extends BaseHttpHandler {
-    private final TaskManager manager;
-
     public EpicHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override
@@ -76,12 +74,11 @@ public class EpicHandler extends BaseHttpHandler {
     private void handleDelete(HttpExchange exchange, String[] segments) throws IOException {
         if (segments.length == 2) {
             int id = Integer.parseInt(segments[1]);
-            Epic epic = manager.getEpic(id);
+            Epic epic = manager.removeEpicById(id);
             if (epic == null) {
                 String errorMessage = "Эпик с таким номером id не найдена";
                 sendNotFound(exchange, errorMessage);
             } else {
-                manager.removeEpicById(id);
                 sendText(exchange, "Эпик успешно удалена");
             }
         } else {

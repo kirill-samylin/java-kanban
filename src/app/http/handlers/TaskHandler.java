@@ -9,10 +9,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class TaskHandler extends BaseHttpHandler {
-    private final TaskManager manager;
-
     public TaskHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override
@@ -75,12 +73,11 @@ public class TaskHandler extends BaseHttpHandler {
     private void handleDelete(HttpExchange exchange, String[] segments) throws IOException {
         if (segments.length == 2) {
             int id = Integer.parseInt(segments[1]);
-            Task task = manager.getTask(id);
+            Task task = manager.removeTaskById(id);
             if (task == null) {
                 String errorMessage = "Задача с таким номером id не найдена";
                 sendNotFound(exchange, errorMessage);
             } else {
-                manager.removeTaskById(id);
                 sendText(exchange, "Задача успешно удалена");
             }
         } else {
