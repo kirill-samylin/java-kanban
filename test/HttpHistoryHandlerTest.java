@@ -8,7 +8,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HttpHistoryHandlerTest extends HttpBaseHandlerTest {
     public HttpHistoryHandlerTest() throws IOException {
