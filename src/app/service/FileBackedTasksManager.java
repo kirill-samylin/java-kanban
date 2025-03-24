@@ -3,7 +3,7 @@ package app.service;
 import app.entities.*;
 import app.exceptions.ManagerSaveException;
 import app.enums.*;
-import app.utils.LocalDateAdapter;
+import app.adapter.LocalDateAdapter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -164,21 +164,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeTaskById(int id) {
-        super.removeTaskById(id);
+    public Task removeTaskById(int id) {
+        Task task = super.removeTaskById(id);
         save();
+        return task;
     }
 
     @Override
-    public void removeEpicById(int epicId) {
-        super.removeEpicById(epicId);
+    public Epic removeEpicById(int epicId) {
+        Epic epic = super.removeEpicById(epicId);
         save();
+        return epic;
     }
 
     @Override
-    public void removeSubTaskById(int subtaskIdForRemove) {
-        super.removeSubTaskById(subtaskIdForRemove);
+    public SubTask removeSubTaskById(int subtaskIdForRemove) {
+        SubTask subTask = super.removeSubTaskById(subtaskIdForRemove);
         save();
+        return subTask;
     }
 
     @Override

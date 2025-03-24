@@ -28,11 +28,11 @@ public interface TaskManager {
 
     int createNewEpic(Epic newEpic);
 
-    void removeTaskById(int taskId);
+    Task removeTaskById(int taskId);
 
-    void removeSubTaskById(int subTaskId);
+    SubTask removeSubTaskById(int subTaskId);
 
-    void removeEpicById(int epicId);
+    Epic removeEpicById(int epicId);
 
     void removeAllTasks();
 

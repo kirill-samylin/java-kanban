@@ -2,7 +2,7 @@ package app.entities;
 
 import app.enums.TaskStatus;
 import app.enums.TaskType;
-import app.utils.LocalDateAdapter;
+import app.adapter.LocalDateAdapter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -109,7 +109,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id);
+        return id == task.id;
     }
 
     @Override

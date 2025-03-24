@@ -60,7 +60,7 @@ public class Epic extends Task {
                 ", id='" + id + '\'' +
                 ", статус='" + status + '\'' +
                 ", дата начала='" + getStartTimeString() + '\'' +
-                ", продолжительность='" + duration.toMinutes() + '\'' +
+                ", продолжительность='" + getDuration().toMinutes() + '\'' +
                 ", дата окончания='" + getEndTimeString() + '\'';
     }
 }

@@ -80,8 +80,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createNewTask(Task newTask) {
         validate(newTask);
-        int id = generateId();
-        newTask.setId(id);
+        if (newTask.getId() == 0) {
+            newTask.setId(generateId());
+        }
+        int id = newTask.getId();
         tasks.put(id, newTask);
         prioritizedTasks.add(newTask);
         return id;
@@ -90,8 +92,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createNewSubtask(SubTask newSubtask) {
         validate(newSubtask);
-        int id = generateId();
-        newSubtask.setId(id);
+        if (newSubtask.getId() == 0) {
+            newSubtask.setId(generateId());
+        }
+        int id = newSubtask.getId();
         int epicId = newSubtask.getEpicId();
         Epic epic = epics.get(epicId);
         if (epic != null) epic.addSubTaskId(id);
@@ -104,25 +108,29 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int createNewEpic(Epic newEpic) {
-        int id = generateId();
+        if (newEpic.getId() == 0) {
+            newEpic.setId(generateId());
+        }
+        int id = newEpic.getId();
         newEpic.setId(id);
         epics.put(id, newEpic);
         return id;
     }
 
     @Override
-    public void removeTaskById(int taskId) {
-        if (tasks.containsKey(taskId)) {
-            Task removedTask = tasks.remove(taskId);
+    public Task removeTaskById(int taskId) {
+        Task removedTask = tasks.remove(taskId);
+        if (removedTask != null) {
             historyManager.remove(taskId);
             prioritizedTasks.remove(removedTask);
         } else {
             System.out.println("Не найдена задача по индентификатору: " + taskId);
         }
+        return removedTask;
     }
 
     @Override
-    public void removeSubTaskById(int subTaskId) {
+    public SubTask removeSubTaskById(int subTaskId) {
         SubTask subTask = subTasks.remove(subTaskId);
         prioritizedTasks.remove(subTask);
         historyManager.remove(subTaskId);
@@ -138,10 +146,11 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Не найдена подзадача по индентификатору: " + subTaskId);
         }
+        return subTask;
     }
 
     @Override
-    public void removeEpicById(int epicId) {
+    public Epic removeEpicById(int epicId) {
         Epic epicToRemove = epics.remove(epicId);
         if (epicToRemove != null) {
             ArrayList<Integer> subTaskIdsToRemove = epicToRemove.getSubTaskIds();
@@ -156,6 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Не найден эпик по индентификатору: " + epicId);
         }
+        return epicToRemove;
     }
 
     @Override
@@ -300,7 +310,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Task> prioritizedTasks = getPrioritizedTasks();
 
         boolean hasOverlap = prioritizedTasks.stream()
-                .filter(task -> task.getStartTime() != null && task.getEndTime() != null)
+                .filter(task -> task.getStartTime() != null && task.getEndTime() != null && !task.equals(taskToValidate))
                 .anyMatch(task ->
                         newStartTime.isBefore(task.getEndTime()) && task.getStartTime().isBefore(newEndTime)
                 );
